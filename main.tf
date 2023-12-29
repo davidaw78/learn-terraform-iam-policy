@@ -19,6 +19,10 @@ resource "aws_iam_group" "dev_group" {
   name = "dev-group"
 }
 
+resource "aws_iam_group" "dev_group_policy" {
+  name = "dev-group-policy"
+}
+
 resource "aws_iam_user_group_membership" "dev_group_membership" {
   user = aws_iam_user.dev_user.name
   groups = [
@@ -35,6 +39,28 @@ resource "aws_iam_user_login_profile" "dev_user_login_profile" {
 # testing staging branch
 output "password" {
  value = aws_iam_user_login_profile.dev_user_login_profile.password
+}
+
+#testing adding policy to a group
+resource "aws_iam_group_policy" "dev_group_policy" {
+  name  = "dev_group_policy"
+  group = aws_iam_group.dev_group_policy.name
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+
+  policy = <<EOF
+{
+ "Version": "2012-10-17",
+ "Statement": [{
+   "Effect": "Allow",
+   "Action": [
+     "ec2:Describe*"
+   ],
+   "Resource": "*"
+ }]
+}
+ EOF
 }
 
 # testing attaching to user 
