@@ -37,11 +37,13 @@ output "password" {
  value = aws_iam_user_login_profile.dev_user_login_profile.password
 }
 
-resource "aws_iam_policy" "policy" {
+# testing attaching to user 
+resource "aws_iam_user_policy" "user_policy" {
   name        = "test_policy"
-  path        = "/"
-  description = "My test policy"
-
+#  path        = "/"
+#  description = "My test policy"
+  user = aws_iam_user.dev_user.name
+  
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
 
