@@ -51,23 +51,39 @@ resource "aws_iam_group_policy" "dev_group_policy" {
 
   policy = <<EOF
 {
- "Version": "2012-10-17",
- "Statement": [{
-   "Effect": "Allow",
-   "Action": [
-     "ec2:Describe*"
-   ],
-   "Resource": "*"
- }]
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "ec2:*",
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "ec2:ResourceTag/Env": "dev"
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": "ec2:Describe*",
+            "Resource": "*"
+        },
+        {
+            "Effect": "Deny",
+            "Action": [
+                "ec2:DeleteTags",
+                "ec2:CreateTags"
+            ],
+            "Resource": "*"
+        }
+    ]
 }
  EOF
 }
 
 # testing attaching to user 
 resource "aws_iam_user_policy" "user_policy" {
-  name        = "test_policy"
-#  path        = "/"
-#  description = "My test policy"
+  name        = "DevPolicy"
   user = aws_iam_user.dev_user.name
   
   # Terraform's "jsonencode" function converts a
@@ -75,14 +91,32 @@ resource "aws_iam_user_policy" "user_policy" {
 
   policy = <<EOF
 {
- "Version": "2012-10-17",
- "Statement": [{
-   "Effect": "Allow",
-   "Action": [
-     "ec2:Describe*"
-   ],
-   "Resource": "*"
- }]
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "ec2:*",
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "ec2:ResourceTag/Env": "dev"
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": "ec2:Describe*",
+            "Resource": "*"
+        },
+        {
+            "Effect": "Deny",
+            "Action": [
+                "ec2:DeleteTags",
+                "ec2:CreateTags"
+            ],
+            "Resource": "*"
+        }
+    ]
 }
  EOF
 }
