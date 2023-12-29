@@ -20,6 +20,7 @@ resource "aws_iam_user_login_profile" "dev_user_login_profile" {
  pgp_key = "keybase:dev-user"
 }
 
+# testing staging branch
 #output "password" {
 # value = aws_iam_user_login_profile.dev_user_login_profile.password
 #}
