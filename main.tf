@@ -20,9 +20,9 @@ resource "aws_iam_user_login_profile" "dev_user_login_profile" {
  pgp_key = "keybase:dev-user"
 }
 
-output "password" {
- value = aws_iam_user_login_profile.dev_user_login_profile.password
-}
+#output "password" {
+# value = aws_iam_user_login_profile.dev_user_login_profile.password
+#}
 
 resource "aws_iam_policy" "policy" {
   name        = "test_policy"
