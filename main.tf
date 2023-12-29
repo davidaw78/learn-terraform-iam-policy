@@ -11,18 +11,17 @@ provider "aws" {
  region = "us-east-1"
 }
 
+# create dev-user
 resource "aws_iam_user" "dev_user" {
   name = "dev-user"
 }
 
+# create dev-group
 resource "aws_iam_group" "dev_group" {
   name = "dev-group"
 }
 
-resource "aws_iam_group" "dev_group_policy" {
-  name = "dev-group-policy"
-}
-
+# create dev-group-membership
 resource "aws_iam_user_group_membership" "dev_group_membership" {
   user = aws_iam_user.dev_user.name
   groups = [
@@ -42,7 +41,7 @@ output "password" {
 #testing adding policy to a group
 resource "aws_iam_group_policy" "dev_group_policy" {
   name  = "dev_group_policy"
-  group = aws_iam_group.dev_group_policy.name
+  group = aws_iam_group.dev_group.name
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
